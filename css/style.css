@@ -325,12 +325,22 @@ progress {
 
 
 #header-carousel {
-  height: 82vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
+
+@media screen and (min-width:1300px) {
+  #header-carousel {
+    height: 82vh;
+  }
+}
+
+.services-wrapper {
+  font-size: 1.5rem;
+}
+
 
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
@@ -10393,7 +10403,6 @@ h6 {
   top: 50%;
   left: 0;
   margin-top: -20px;
-  padding: 0 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -10498,4 +10507,9 @@ h6 {
   margin: 0;
   padding: 0;
   list-style-type: none;
+}
+
+
+.font-weight-bolder {
+  font-weight: bolder;
 }
