@@ -1,0 +1,19 @@
+{
+  "redirects": [
+    { "source": "/about.html", "destination": "/hakkimizda.html", "permanent": true },
+    { "source": "/service.html", "destination": "/hizmetler.html", "permanent": true },
+    { "source": "/contact.html", "destination": "/iletisim.html", "permanent": true },
+    { "source": "/blog.html", "destination": "/", "permanent": true },
+    { "source": "/single.html", "destination": "/", "permanent": true },
+    { "source": "/project.html", "destination": "/", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}

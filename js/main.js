@@ -1,121 +1,62 @@
-(function ($) {
-    "use strict";
-    
-    // Dropdown on mouse hover
-    $(document).ready(function () {
-        function toggleNavbarMethod() {
-            if ($(window).width() > 992) {
-                $('.navbar .dropdown').on('mouseover', function () {
-                    $('.dropdown-toggle', this).trigger('click');
-                }).on('mouseout', function () {
-                    $('.dropdown-toggle', this).trigger('click').blur();
-                });
-            } else {
-                $('.navbar .dropdown').off('mouseover').off('mouseout');
-            }
-        }
-        toggleNavbarMethod();
-        $(window).resize(toggleNavbarMethod);
+(function () {
+  const header = document.getElementById("header");
+  const nav = document.getElementById("nav");
+  const toggle = document.querySelector(".nav-toggle");
+  const backTop = document.querySelector(".back-top");
+  const slides = document.querySelectorAll(".hero__slide");
+  const dots = document.querySelectorAll(".hero__dots button");
+  const form = document.getElementById("contact-form");
+  let current = 0;
+
+  const onScroll = () => {
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 8);
+    if (backTop) backTop.classList.toggle("is-visible", window.scrollY > 400);
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      const open = nav.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", String(open));
     });
-    
-    
-    // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.back-to-top').fadeIn('slow');
-        } else {
-            $('.back-to-top').fadeOut('slow');
-        }
+  }
+
+  const goTo = (index) => {
+    if (!slides.length) return;
+    slides[current].classList.remove("is-active");
+    if (dots[current]) dots[current].classList.remove("is-active");
+    current = index;
+    slides[current].classList.add("is-active");
+    if (dots[current]) dots[current].classList.add("is-active");
+  };
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => goTo(index));
+  });
+
+  if (slides.length > 1) {
+    setInterval(() => goTo((current + 1) % slides.length), 6500);
+  }
+
+  if (form) {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const name = String(data.get("name") || "").trim();
+      const phone = String(data.get("phone") || "").trim();
+      const service = String(data.get("service") || "").trim();
+      const message = String(data.get("message") || "").trim();
+      const text = [
+        "Merhaba, Özipek Dekorasyon web sitesinden yazıyorum.",
+        name && `Ad: ${name}`,
+        phone && `Telefon: ${phone}`,
+        service && `Hizmet: ${service}`,
+        message && `Mesaj: ${message}`
+      ].filter(Boolean).join("\n");
+      window.open("https://wa.me/905323478988?text=" + encodeURIComponent(text), "_blank");
     });
-    $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-        return false;
-    });
-
-
-    // Service carousel
-    $(".service-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1500,
-        dots: false,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="fa fa-angle-left" aria-hidden="true"></i>',
-            '<i class="fa fa-angle-right" aria-hidden="true"></i>'
-        ],
-        responsive: {
-            0:{
-                items:1
-            },
-            576:{
-                items:1
-            },
-            768:{
-                items:2
-            },
-            992:{
-                items:2
-            }
-        }
-    });
-
-
-    // Portfolio isotope and filter
-    var portfolioIsotope = $('.portfolio-container').isotope({
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows'
-    });
-
-    $('#portfolio-flters li').on('click', function () {
-        $("#portfolio-flters li").removeClass('active');
-        $(this).addClass('active');
-
-        portfolioIsotope.isotope({filter: $(this).data('filter')});
-    });
-
-
-    // Team carousel
-    $(".team-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1500,
-        dots: false,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="fa fa-angle-left" aria-hidden="true"></i>',
-            '<i class="fa fa-angle-right" aria-hidden="true"></i>'
-        ],
-        responsive: {
-            0:{
-                items:1
-            },
-            576:{
-                items:1
-            },
-            768:{
-                items:2
-            },
-            992:{
-                items:3
-            }
-        }
-    });
-
-
-    // Testimonials carousel
-    $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        items: 1,
-        dots: false,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="fa fa-angle-left" aria-hidden="true"></i>',
-            '<i class="fa fa-angle-right" aria-hidden="true"></i>'
-        ]
-    });
-    
-})(jQuery);
-
+  }
+})();
